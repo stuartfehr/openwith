@@ -1,0 +1,4 @@
+Simple Google Chrome extension to allow the user to easily open a file found on codesearch with the application of their choice on their local computer.
+
+This plugin was created with Nixysa (http://code.google.com/p/nixysa/), and you will need to download it separately if you want to build this project.
+This plugin is compiled using SCons (http://www.scons.org/), and you will need to download it separately if you want to build this project.
