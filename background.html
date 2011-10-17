@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
+      function doClick() {
+        chrome.tabs.getSelected(null, function(tab) {
+          var relativePath = /^(.*?\/){4}(.*)$/.exec(tab.url)[2]; // Specifically for codesearch
+          var projectRoot = localStorage["project-root"];
+          if(!projectRoot || projectRoot == "") { alert("Please set the project root on the options page."); return; }
+          var command = localStorage["open-with-command"];
+          if(!command || command == "") { alert("Please set the open with command on the options page."); return; }
+
+          var ow = $("#plugin").get()[0].OpenWith();
+          var fullcommand = command + " " + projectRoot + (projectRoot.charAt(projectRoot.length - 1) != "/" ? "/" : "") + relativePath;
+          ow.open(fullcommand);
+        });
+      }
+
+      $(document).ready(function() {
+        chrome.browserAction.onClicked.addListener(doClick);
+      });
+    </script>
+  </head>
+
+  <body>
+    <object type="application/openwith" id="plugin" width="0" height="0"></object>
+  </body>
+</html>
+

@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>OpenWith Settings</title>
+    <style type="text/css">
+      input[type=text] {
+        border: solid 1px #000000;
+        padding: 0.5em;
+        border-radius: 7px;
+        width: 51em;
+      }
+    </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
+      function restore() {
+        $("#project-root").val(localStorage["project-root"] || "");
+        $("#open-with-command").val(localStorage["open-with-command"] || "");
+      }
+
+      function save() {
+        localStorage["project-root"] = $("#project-root").val();
+        localStorage["open-with-command"] = $("#open-with-command").val();
+      }
+
+      $(document).ready(function() {
+        restore();
+      });
+    </script>
+  </head>
+
+  <body>
+    <table>
+      <tr><td colspan="2"><h2>OpenWith Settings</h2></td></tr>
+      <tr>
+        <td>Project Root:</td>
+        <td><input type="text" id="project-root" /></td>
+      </tr>
+      <tr>
+        <td>Open With Command:</td>
+        <td><input type="text" id="open-with-command" /></td>
+      </tr>
+    </table>
+    <button onclick="save()">Save</button>
+  </body>
+</html>
+
