@@ -60,3 +60,13 @@ AUTOGEN_CC_FILES = [f for f in AUTOGEN_OUTPUT if f.suffix == '.cc']
 
 env.SharedLibrary('openwith', AUTOGEN_CC_FILES + SOURCES +
                   ['$STATIC_GLUE_DIR/' + f for f in STATIC_GLUE_SOURCES])
+
+# Create the packed .crx package
+env.Install('openwith', source = [ 'background.html', 'icon.png', 'inject.js', 'manifest.json', 'openwith.html', 'options.html', 'libopenwith.so' ])
+env.Command([ 'openwith.crx', 'openwith.pem' ], 'openwith', 'google-chrome --pack-extension=openwith', ENV = { 'DISPLAY': ':0.0' })
+
+#env.Command('openwith.crx', Dir('openwith'), [
+#  env.Install('openwith', source = [ 'background.html', 'icon.png', 'inject.js', 'manifest.json', 'openwith.html', 'options.html' ])
+  #'google-chrome --pack-extension=openwith'
+#])
+

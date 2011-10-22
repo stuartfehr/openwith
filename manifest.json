@@ -7,12 +7,17 @@
   "browser_action": {
     "default_icon": "icon.png",
     "default_title": "Open With..."
-    /* "default_popup": "openwith.html" */
   },
   "permissions": [
     "tabs"
   ],
   "plugins": [
     { "path": "libopenwith.so" }  
+  ],
+  "content_scripts": [
+    {
+      "matches": [ "<all_urls>" ],
+      "js": [ "inject.js" ]
+    }
   ]
 }
