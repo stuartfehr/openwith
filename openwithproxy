@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+import os
+import os.path
+import BaseHTTPServer
+import urlparse
+import json
+
+
+PORT = 1337
+OPEN_COMMAND = 'gvim'
+OPEN_COMMAND_ARGS = []
+TMUX_DB_PATH = os.path.join(os.environ['HOME'], '.tmux/paths')
+
+
+class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
+  def do_POST(self):
+    postvars = urlparse.parse_qs(self.rfile.read(int(self.headers['Content-Length'])))
+    relativepath = postvars['request'][0]
+    database = json.load(file(TMUX_DB_PATH, 'r'))
+    basepath = database['paths'][str(database['current'])]
+    fullpath = os.path.join(basepath, relativepath)
+    if os.fork() == 0:
+      os.execvp(OPEN_COMMAND, [OPEN_COMMAND] + OPEN_COMMAND_ARGS + [fullpath])
+
+
+server_address = ('127.0.0.1', PORT)
+httpd = BaseHTTPServer.HTTPServer(server_address, Handler)
+try:
+  httpd.serve_forever()
+except KeyboardInterrupt:
+  pass

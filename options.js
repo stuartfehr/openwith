@@ -12,7 +12,7 @@ function createParserSection(index, elem) {
           <tr>\
             <td class="label-column">Parser Function:</td>\
             <td>\
-            <tt>function(<a href="http://code.google.com/chrome/extensions/tabs.html#type-Tab">tab</a>) { </tt><br />\
+            <tt>function(url) { </tt><br />\
               <div style="float: left; width:1.5em">&nbsp;</div><textarea class="parser-function">' + elem.myfunction + '</textarea><br />\
               <tt>} //Should return a relative path to the file you wish to open</tt>\
             </td>\
@@ -23,8 +23,7 @@ function createParserSection(index, elem) {
 }
 
 function restore() {
-  $("#project-root").val(localStorage["project-root"] || "");
-  $("#open-with-command").val(localStorage["open-with-command"] || "");
+  $("#open-with-proxy-port").val(localStorage["open-with-proxy-port"] || "");
   var parserfunc = JSON.parse(localStorage["parser-functions"] || "[]");
   $(parserfunc).each(function(index, elem) {
     createParserSection(index, elem);
@@ -32,8 +31,7 @@ function restore() {
 }
 
 function save() {
-  localStorage["project-root"] = $("#project-root").val();
-  localStorage["open-with-command"] = $("#open-with-command").val();
+  localStorage["open-with-proxy-port"] = $("#open-with-proxy-port").val();
   var parserFunctions = [];
   $(".domain").each(function(index, elem) {
     var newEntry = { domain: elem.value };

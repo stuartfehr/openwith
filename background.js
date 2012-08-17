@@ -1,9 +1,5 @@
 function doClick() {
   chrome.tabs.getSelected(null, function(tab) {
-    var projectRoot = localStorage["project-root"];
-    if(!projectRoot || projectRoot == "") { alert("Please set the project root on the options page."); return; }
-    var command = localStorage["open-with-command"];
-    if(!command || command == "") { alert("Please set the open with command on the options page."); return; }
 
     var parserfunctions = JSON.parse(localStorage["parser-functions"]);
     var found = false;
@@ -24,9 +20,12 @@ function doClick() {
 }
 
 window.addEventListener('message', function(event) {
+  var port = localStorage["open-with-proxy-port"];
+  if(!port || port == "") { alert("Please set the open with proxy port on the options page."); return; }
+
   var relativepath = event.data.relativepath || '';
   if(relativepath != '') {
-    $.post('http://localhost:1337/', { 'request': relativepath});
+    $.post('http://localhost:' + port + '/', { 'request': relativepath});
   } else {
     alert("Unable to find a suitable relative path for this site.\nPlease check your parsers and try again.");
   }
