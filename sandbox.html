@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <script type="text/javascript" src="jquery.min.js"></script>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      window.addEventListener('message', function(event) {
+        var url = event.data.url;
+        var functiontext = event.data.functiontext;
+
+        var relativepath = new Function("url", functiontext)(url);
+
+        event.source.postMessage({ relativepath: relativepath }, event.origin);
+      })
+    </script>
+  </body>
+</html>

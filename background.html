@@ -1,50 +1,11 @@
 <html>
   <head>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-    <script type="text/javascript">
-      function doClick() {
-        chrome.tabs.getSelected(null, function(tab) {
-          var projectRoot = localStorage["project-root"];
-          if(!projectRoot || projectRoot == "") { alert("Please set the project root on the options page."); return; }
-          var command = localStorage["open-with-command"];
-          if(!command || command == "") { alert("Please set the open with command on the options page."); return; }
-
-          var parserfunctions = JSON.parse(localStorage["parser-functions"]);
-          var relativePath = "";
-          for(var i = 0; i < parserfunctions.length; i++) {
-            if(tab.url.indexOf(parserfunctions[i].domain) == 0) {
-              // Found a match
-              var func = new Function("tab", parserfunctions[i].myfunction);
-              try {
-                relativePath = func(tab);
-              } catch(err) {} // Swallow the error if there is one
-            }
-          }
-
-          if(!relativePath || typeof relativePath != "string" || relativePath == "") {
-            alert("Unable to find a suitable relative path for this site.\nPlease check your parsers and try again.");
-            return;
-          }
-
-          var ow = $("#plugin").get()[0].OpenWith();
-          var fullcommand = command + " " + projectRoot + (projectRoot.charAt(projectRoot.length - 1) != "/" ? "/" : "") + relativePath;
-          ow.open(fullcommand);
-        });
-      }
-
-      $(document).ready(function() {
-        chrome.browserAction.onClicked.addListener(doClick);
-        chrome.extension.onRequest.addListener(
-          function(request, sender, sendResponse) {
-            if (request.activate) {
-              doClick();
-            }
-          });
-      });
-    </script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="background.js"></script>
   </head>
 
   <body>
+    <iframe id="sandbox" src="sandbox.html"></iframe>
     <object type="application/openwith" id="plugin" width="0" height="0"></object>
   </body>
 </html>
