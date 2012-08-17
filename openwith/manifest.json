@@ -1,12 +1,11 @@
 {
   "name": "Open With",
-  "version": "1.0",
+  "version": "2.0",
   "manifest_version": 2,
   "description": "An extension to open a Code Search file in another editor",
   "options_page": "options.html",
   "background": {
     "page": "background.html"
-    //"scripts": [ "jquery.min.js", "background.js" ]
   },
   "browser_action": {
     "default_icon": "icon.png",
@@ -15,9 +14,6 @@
   "permissions": [
     "tabs",
     "http://*/*"
-  ],
-  "plugins": [
-    { "path": "libopenwith.so" }  
   ],
   "content_scripts": [
     {
