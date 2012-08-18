@@ -1,21 +1,22 @@
 function doClick() {
   chrome.tabs.getSelected(null, function(tab) {
-
-    var parserfunctions = JSON.parse(localStorage["parser-functions"]);
-    var found = false;
-    for(var i = 0; i < parserfunctions.length; i++) {
-      if(tab.url.indexOf(parserfunctions[i].domain) == 0) {
-        // Found a match
-        found = true;
-        var sandboxframe = document.getElementById('sandbox');
-        var message = { url: tab.url, functiontext: parserfunctions[i].myfunction };
-        sandboxframe.contentWindow.postMessage(message, '*');
+    chrome.tabs.sendMessage(tab.id, { getHtml: true }, function(response) {
+      var parserfunctions = JSON.parse(localStorage["parser-functions"]);
+      var found = false;
+      for(var i = 0; i < parserfunctions.length; i++) {
+        if(tab.url.indexOf(parserfunctions[i].domain) == 0) {
+          // Found a match
+          found = true;
+          var sandboxframe = document.getElementById('sandbox');
+          var message = { url: tab.url, html: response.html, functiontext: parserfunctions[i].myfunction };
+          sandboxframe.contentWindow.postMessage(message, '*');
+        }
       }
-    }
 
-    if(!found) {
-      alert("Unable to find a suitable relative path for this site.\nPlease check your parsers and try again.");
-    }
+      if(!found) {
+        alert("Unable to find a suitable relative path for this site.\nPlease check your parsers and try again.");
+      }
+    });
   });
 }
 
@@ -33,7 +34,7 @@ window.addEventListener('message', function(event) {
 
 $(document).ready(function() {
   chrome.browserAction.onClicked.addListener(doClick);
-  chrome.extension.onRequest.addListener(
+  chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.activate) {
         doClick();

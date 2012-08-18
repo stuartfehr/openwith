@@ -7,9 +7,10 @@
     <script type="text/javascript">
       window.addEventListener('message', function(event) {
         var url = event.data.url;
+        var html = event.data.html;
         var functiontext = event.data.functiontext;
 
-        var relativepath = new Function("url", functiontext)(url);
+        var relativepath = new Function("url", "html", functiontext)(url, html);
 
         event.source.postMessage({ relativepath: relativepath }, event.origin);
       })

@@ -12,7 +12,7 @@ function createParserSection(index, elem) {
           <tr>\
             <td class="label-column">Parser Function:</td>\
             <td>\
-            <tt>function(url) { </tt><br />\
+            <tt>function(url, html) { </tt><br />\
               <div style="float: left; width:1.5em">&nbsp;</div><textarea class="parser-function">' + elem.myfunction + '</textarea><br />\
               <tt>} //Should return a relative path to the file you wish to open</tt>\
             </td>\
