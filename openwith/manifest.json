@@ -13,7 +13,7 @@
   },
   "permissions": [
     "tabs",
-    "http://*/*"
+    "http://localhost:*/*"
   ],
   "content_scripts": [
     {
