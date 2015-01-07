@@ -9,7 +9,7 @@ import json
 
 PORT = 1337
 OPEN_COMMAND = 'gvim'
-OPEN_COMMAND_ARGS = []
+OPEN_COMMAND_ARGS = ['--servername', '--remote-tab-silent']
 TMUX_DB_PATH = os.path.join(os.environ['HOME'], '.tmux/paths')
 
 
@@ -20,8 +20,12 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
     database = json.load(file(TMUX_DB_PATH, 'r'))
     basepath = database['paths'][str(database['current'])]
     fullpath = os.path.join(basepath, relativepath)
+    client = os.path.basename(os.path.dirname(basepath))
+    OPEN_COMMAND_ARGS.insert(1, client)
     if os.fork() == 0:
       os.execvp(OPEN_COMMAND, [OPEN_COMMAND] + OPEN_COMMAND_ARGS + [fullpath])
+    else:
+      os.wait()
 
 
 server_address = ('127.0.0.1', PORT)
